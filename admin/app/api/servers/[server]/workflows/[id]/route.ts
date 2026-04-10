@@ -7,7 +7,7 @@ type Params = Promise<{ server: string; id: string }>
 export async function GET(_req: NextRequest, { params }: { params: Params }) {
   try {
     const { server: serverId, id } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const workflow = await getWorkflow(server, id)
     return NextResponse.json(workflow)
   } catch (e) {
@@ -18,7 +18,7 @@ export async function GET(_req: NextRequest, { params }: { params: Params }) {
 export async function DELETE(_req: NextRequest, { params }: { params: Params }) {
   try {
     const { server: serverId, id } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     await deleteWorkflow(server, id)
     return NextResponse.json({ success: true })
   } catch (e) {

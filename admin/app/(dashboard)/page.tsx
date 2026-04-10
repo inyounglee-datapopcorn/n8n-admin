@@ -4,8 +4,8 @@ import { getServers } from '@/lib/server-config'
 
 export const dynamic = 'force-dynamic'
 
-export default function DashboardPage() {
-  const servers = getServers()
+export default async function DashboardPage() {
+  const servers = await getServers()
 
   return (
     <div className="space-y-6">

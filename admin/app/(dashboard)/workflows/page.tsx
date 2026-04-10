@@ -3,7 +3,7 @@ import WorkflowsClient from './workflows-client'
 
 export const dynamic = 'force-dynamic'
 
-export default function WorkflowsPage() {
-  const servers = getServers()
+export default async function WorkflowsPage() {
+  const servers = await getServers()
   return <WorkflowsClient servers={servers} />
 }

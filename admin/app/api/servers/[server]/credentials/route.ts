@@ -5,7 +5,7 @@ import { listCredentials } from '@/lib/n8n-client'
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ server: string }> }) {
   try {
     const { server: serverId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const credentials = await listCredentials(server)
     return NextResponse.json(credentials)
   } catch (e) {

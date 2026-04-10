@@ -19,7 +19,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Gemini API 키가 설정되지 않았습니다. Settings에서 입력해주세요.' }, { status: 500 })
   }
 
-  const servers = getServers()
+  const servers = await getServers()
   if (servers.length === 0) {
     return NextResponse.json({ error: '서버 설정이 없습니다.' }, { status: 500 })
   }

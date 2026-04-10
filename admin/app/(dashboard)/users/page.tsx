@@ -1,7 +1,7 @@
 import { getServers } from '@/lib/server-config'
 import UsersClient from './users-client'
 
-export default function UsersPage() {
-  const servers = getServers()
+export default async function UsersPage() {
+  const servers = await getServers()
   return <UsersClient servers={servers} />
 }

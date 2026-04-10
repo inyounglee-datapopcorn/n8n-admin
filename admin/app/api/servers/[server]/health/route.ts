@@ -5,7 +5,7 @@ import { healthCheck, listWorkflows, listUsers } from '@/lib/n8n-client'
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ server: string }> }) {
   try {
     const { server: serverId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const { alive, latencyMs } = await healthCheck(server)
 
     if (!alive) {

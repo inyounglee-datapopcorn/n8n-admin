@@ -1,15 +1,8 @@
 import fs from 'fs'
+import { auth } from '@/auth'
 import { ServerConfig } from './types'
 
-/**
- * .env 또는 JSON 파일에서 서버 목록을 읽어 반환합니다.
- *
- * Electron 환경: ELECTRON_CONFIG_PATH가 설정되면 해당 JSON 파일에서 읽음.
- * 웹 환경: process.env에서 SERVER_URL, SERVER_API_KEY 등을 읽음.
- *
- * ⚠️ 이 함수는 서버 컴포넌트에서만 호출하세요.
- */
-export function getServers(): ServerConfig[] {
+function getConfiguredServers(): ServerConfig[] {
   // Electron: JSON 파일에서 읽기
   const configPath = process.env.ELECTRON_CONFIG_PATH
   if (configPath) {
@@ -26,13 +19,11 @@ export function getServers(): ServerConfig[] {
 
   // 웹: .env에서 읽기
   const servers: ServerConfig[] = []
-
   let i = 1
   while (true) {
     const prefix = i === 1 ? 'SERVER' : `SERVER${i}`
     const url = process.env[`${prefix}_URL`]
     if (!url) break
-
     servers.push({
       id: `server${i}`,
       name: process.env[`${prefix}_NAME`] ?? `Server ${i}`,
@@ -67,12 +58,17 @@ export function getServers(): ServerConfig[] {
   return servers
 }
 
-/**
- * 특정 서버 ID로 서버 설정을 가져옵니다.
- * 없는 경우 에러를 던집니다.
- */
-export function getServer(id: string): ServerConfig {
-  const servers = getServers()
+export async function getServers(): Promise<ServerConfig[]> {
+  const configured = getConfiguredServers()
+  if (configured.length > 0) return configured
+
+  const session = await auth()
+  const sessionServers = (session as any)?.servers as ServerConfig[] | undefined
+  return sessionServers ?? []
+}
+
+export async function getServer(id: string): Promise<ServerConfig> {
+  const servers = await getServers()
   const server = servers.find((s) => s.id === id)
   if (!server) throw new Error(`Unknown server: ${id}. Available: ${servers.map((s) => s.id).join(', ')}`)
   return server

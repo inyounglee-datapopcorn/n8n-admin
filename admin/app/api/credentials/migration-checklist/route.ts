@@ -5,8 +5,8 @@ import { listCredentials } from '@/lib/n8n-client'
 export async function POST(req: NextRequest) {
   try {
     const { fromServer, toServer } = await req.json()
-    const src = getServer(fromServer)
-    const dst = getServer(toServer)
+    const src = await getServer(fromServer)
+    const dst = await getServer(toServer)
 
     const [srcCreds, dstCreds] = await Promise.all([
       listCredentials(src),

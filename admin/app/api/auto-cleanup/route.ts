@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const serverId: string = body.serverId ?? 'server1'
 
   try {
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const result = await runAutoCleanup(server, geminiApiKey)
     return NextResponse.json({ ok: true, serverId, ...result })
   } catch (err) {

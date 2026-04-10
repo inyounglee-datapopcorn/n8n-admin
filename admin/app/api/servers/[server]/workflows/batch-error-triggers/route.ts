@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { server: serverId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const workflows = await listWorkflows(server)
 
     const active = workflows.filter((wf) => wf.active)
@@ -32,7 +32,7 @@ export async function POST(
 ) {
   try {
     const { server: serverId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const { workflowIds } = (await req.json()) as { workflowIds: string[] }
 
     const results = { added: [] as string[], failed: [] as { id: string; error: string }[] }

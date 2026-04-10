@@ -14,7 +14,7 @@ export async function GET(
 ) {
   try {
     const { server: serverId, id: userId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
 
     const [workflows, credentials, projects] = await Promise.all([
       listWorkflows(server),
@@ -55,7 +55,7 @@ export async function POST(
 ) {
   try {
     const { server: serverId } = await params
-    const server = getServer(serverId)
+    const server = await getServer(serverId)
     const { targetProjectId, workflowIds, credentialIds } = await req.json()
 
     const results = {

@@ -1,0 +1,12 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npx --yes pnpm@10.28.2 install --no-frozen-lockfile",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/auto-cleanup",
+      "schedule": "0 18 * * *"
+    }
+  ]
+}
